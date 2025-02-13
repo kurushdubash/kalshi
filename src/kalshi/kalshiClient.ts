@@ -10,7 +10,7 @@ const CRYPTO_SIGNING_TYPE = "sha256";
 export class KalshiClient {
   private privateKey: KeyObject;
   private kalshiAPIId: string;
-  private markets: KalshiMarketsClient;
+  public markets: KalshiMarketsClient;
   public apiUrl: string;
 
   constructor(key: KeyObject, kalshiAPIid: string, apiUrl?: string) {
