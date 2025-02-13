@@ -13,33 +13,31 @@ To instnatiate the client, you can either do so by providing a path to your `.pe
 
 Via a `.pem` file
 ```
-const kalshiClient = KalshiClientImpl.createFromFile(filePath, KALSHI_API_ID_HERE);
+const kalshiClient = KalshiClient.fromFile(filePath, KALSHI_API_ID_HERE);
 ```
 
 or via the key directly:
 ```
-const kalshiClient = KalshiClientImpl.createFromKey(key, KALSHI_API_ID_HERE);
+const kalshiClient = KalshiClient.fromKey(key, KALSHI_API_ID_HERE);
 ```
 
 # Using the Client
 
 To use the client, you can invoke any of the market commands:
 ```
-const market = await kalshiClient.getMarket("KXEURUSDH-25FEB1416-T1.04899");
+const market = await kalshiClient.markets.getMarket("KXEURUSDH-25FEB1416-T1.04899");
 ```
 
 The current supported interface for the market types are:
 ```
-export interface KalshiClient {
-  getEvents(eventsRequest?: KalshiEventsRequest): Promise<KalshiEvent[]>;
-  getEvent(eventTicker: string, with_nested_markets: boolean): Promise<KalshiEvent>;
-  getMarkets(marketsRequest?: KalshiMarketsRequest): Promise<KalshiMarket[]>;
-  getMarket(marketTicker: string): Promise<KalshiMarket>;
-  getTrades(tradeRequest?: KalshiTradesRequest): Promise<KalshiTrade[]>;
-  getMarketOrderBook(marketTicker: string): Promise<KalshiOrderBook>;
-  getSeries(seriesTicker: string): Promise<KalshiSeries>;
-  getMarketCandlesticks(ticker: string,seriesTicker: string, candleStickRequest: KalshiCandlestickRequest): Promise<KalshiCandlestick[]>;
-  createKalshiOrder(orderRequest: KalshiOrderRequest): Promise<KalshiOrderResponse>;
-  cancelKalshiOrder(orderId: string): Promise<KalshiCancelResponse>;
-}
+getEvents(eventsRequest?: KalshiEventsRequest): Promise<KalshiEvent[]>;
+getEvent(eventTicker: string, with_nested_markets: boolean): Promise<KalshiEvent>;
+getMarkets(marketsRequest?: KalshiMarketsRequest): Promise<KalshiMarket[]>;
+getMarket(marketTicker: string): Promise<KalshiMarket>;
+getTrades(tradeRequest?: KalshiTradesRequest): Promise<KalshiTrade[]>;
+getMarketOrderBook(marketTicker: string): Promise<KalshiOrderBook>;
+getSeries(seriesTicker: string): Promise<KalshiSeries>;
+getMarketCandlesticks(ticker: string,seriesTicker: string, candleStickRequest: KalshiCandlestickRequest): Promise<KalshiCandlestick[]>;
+createKalshiOrder(orderRequest: KalshiOrderRequest): Promise<KalshiOrderResponse>;
+cancelKalshiOrder(orderId: string): Promise<KalshiCancelResponse>;
 ```
