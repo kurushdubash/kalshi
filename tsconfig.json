@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "module": "ESNext",
+    "module": "CommonJS",
     "moduleResolution": "Node",
     "target": "ES6",
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "dist"
   },
   "include": ["src"]
 }

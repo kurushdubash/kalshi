@@ -1,19 +1,42 @@
 {
-  "name": "kalshi",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:kurushdubash/kalshi.git",
-  "author": "Kurush Dubash <dubash.kurush@gmail.com>",
+  "name": "kalshi-sdk",
+  "version": "0.0.1",
+  "description": "A public TypeScript SDK for Kalshi (https://kalshi.com/)",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist",
+    "test": "echo 'No tests yet'",
+    "deploy": "yarn build && npm version patch && npm publish --access public",
+    "precommit": "lint-staged"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kurushdubash/kalshi-sdk.git"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": "prettier --write"
+  },
+  "keywords": [
+    "typescript",
+    "sdk",
+    "kalshi",
+    "prediction markets",
+    "kalshi-sdk"
+  ],
+  "author": "Kurush Dubash",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^9.20.1",
-    "prettier": "^3.5.0",
-    "rimraf": "^6.0.1",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.4.3",
     "tsup": "^8.3.6",
-    "typescript": "^5.7.3"
-  },
-  "scripts": {
-  "build": "tsup src/index.ts --format esm,cjs --dts"
-}
-
+    "typescript": "^5.7.3",
+    "prettier": "^2.8.0"
+  }
 }
