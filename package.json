@@ -1,0 +1,19 @@
+{
+  "name": "kalshi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:kurushdubash/kalshi.git",
+  "author": "Kurush Dubash <dubash.kurush@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^9.20.1",
+    "prettier": "^3.5.0",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3"
+  },
+  "scripts": {
+  "build": "tsup src/index.ts --format esm,cjs --dts"
+}
+
+}
