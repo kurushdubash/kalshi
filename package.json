@@ -1,6 +1,6 @@
 {
   "name": "kalshi-sdk",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A public TypeScript SDK for Kalshi (https://kalshi.com/)",
   "type": "module",
   "main": "dist/index.js",
