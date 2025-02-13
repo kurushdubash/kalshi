@@ -2,26 +2,48 @@
   "name": "kalshi-sdk",
   "version": "0.0.3",
   "description": "A public TypeScript SDK for Kalshi (https://kalshi.com/)",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "lib"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "dev": "ts-node src/index.ts",
-    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist",
+    "build": "rm -rf ./dist && tsup src/index.ts --format esm,cjs",
     "test": "echo 'No tests yet'",
     "deploy": "yarn build && npm version patch && npm publish --access public",
     "precommit": "lint-staged"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kurushdubash/kalshi-sdk.git"
+    "url": "git+https://github.com/kurushdubash/kalshi-sdk.git"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": "prettier --write"
+    "*.ts": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   },
+  "contributors": [
+    {
+      "name": "Kurush Dubash",
+      "url": "https://github.com/kurushdubash"
+    },
+    {
+      "name": "Kunal Roy",
+      "url": "https://github.com/kunal365roy"
+    }
+  ],
   "keywords": [
     "typescript",
     "sdk",
@@ -35,8 +57,8 @@
     "eslint": "^9.20.1",
     "husky": "^8.0.0",
     "lint-staged": "^15.4.3",
+    "prettier": "^2.8.0",
     "tsup": "^8.3.6",
-    "typescript": "^5.7.3",
-    "prettier": "^2.8.0"
+    "typescript": "^5.7.3"
   }
 }
