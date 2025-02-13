@@ -3,19 +3,21 @@
   "version": "0.0.5",
   "description": "A public TypeScript SDK for Kalshi (https://kalshi.com/)",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
+      "import": "./dist/index.js",
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "require": "./dist/index.cjs"
     }
   },
   "scripts": {
-    "build": "rm -rf dist/ && tsup src/index.ts --format esm --dts --clean",
+    "build": "rm -rf dist/ && tsup src/index.ts --format esm,cjs --dts --clean",
     "test": "echo 'No tests yet'",
     "deploy": "yarn build && npm version patch && yarn publish --access public",
     "precommit": "lint-staged"
