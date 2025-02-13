@@ -33,10 +33,13 @@ export type KalshiMarket = {
   expiration_value: string;
   category: string;
   risk_limit_cents: number;
-  strike_type: "less" | "greater" | string;
+  strike_type: "less" | "greater" | "custom" | string;
   cap_strike: number;
   rules_primary: string;
   rules_secondary: string;
+  custom_strike?: {
+    [key: string]: string;
+  };
 };
 
 export type KalshiEventInfo = {
@@ -95,4 +98,90 @@ export type KalshiOrderResponse = {
 export type KalshiCancelResponse = {
   order: KalshiOrderResponse["order"];
   reduced_by: number;
+};
+
+export type KalshiMarketsRequest = {
+  limit?: number; // Parameter to specify the number of results per page. Defaults to 100.
+  cursor?: string; // Pointer to the next page of records in pagination.
+  event_ticker?: string; // Event ticker to retrieve markets for.
+  series_ticker?: string; // Series ticker to retrieve contracts for.
+  max_close_ts?: number; // Restricts markets to those closing in or before this timestamp.
+  min_close_ts?: number; // Restricts markets to those closing in or after this timestamp.
+  status?: string; // Restricts markets to those with certain statuses: unopened, open, closed, settled.
+  tickers?: string; // Restricts markets to those with certain tickers, as a comma-separated list.
+};
+
+export type KalshiEventsRequest = {
+  limit?: number; // Parameter to specify the number of results per page. Defaults to 100.
+  cursor?: string; // Pointer to the next page of records in pagination.
+  status?: "unopened" | "open" | "closed" | "settled"; // Restricts events to those with certain statuses.
+  series_ticker?: string; // Series ticker to retrieve contracts for.
+  with_nested_markets?: boolean; // If the markets belonging to the events should be added in the response as a nested field in this event.
+};
+
+export type KalshiTradesRequest = {
+  cursor?: string; // The Cursor represents a pointer to the next page of records in the pagination.
+  limit?: number; // Parameter to specify the number of results per page. Defaults to 100.
+  ticker?: string; // Parameter to specify a specific market to get trades from.
+  min_ts?: number; // Restricts the response to trades after a timestamp.
+  max_ts?: number; // Restricts the response to trades before a timestamp.
+};
+
+export type KalshiTrade = {
+  count: number; // Number of contracts to be bought or sold
+  created_time: string; // Date and time in ISO 8601 format
+  no_price: number; // No price for this trade in cents
+  taker_side: "yes" | "no" | "SIDE_UNSET"; // Side for the taker of this trade
+  ticker: string; // Unique identifier for markets
+  trade_id: string; // Unique identifier for this trade
+  yes_price: number; // Yes price for this trade in cents
+};
+
+export type KalshiSeries = {
+  category: string; // Category specifies the category which this series belongs to.
+  contract_url: string; // ContractUrl provides a direct link to contract terms which govern the series.
+  frequency: string; // Description of the frequency of the series.
+  settlement_sources: {
+    name: string; // The official name of the settlement source
+    url: string; // The URL of the settlement source
+  }[]; // Array of settlement sources
+  tags: string[]; // Tags specifies the subjects that this series relates to.
+  ticker: string; // Ticker that identifies this series.
+  title: string; // Title describing the series.
+};
+
+export type KalshiCandlestick = {
+  candlesticks: {
+    end_period_ts: number; // Unix timestamp for the end of the candlestick period
+    open_interest: number; // Number of contracts bought by end of the period
+    price: {
+      close: number; // Close price at the end of the candlestick period
+      high: number; // Highest price during the candlestick period
+      low: number; // Lowest price during the candlestick period
+      open: number; // Open price at the start of the candlestick period
+      previous: number; // Previous close price
+    };
+    volume: number; // Number of contracts bought during the period
+    yes_ask: {
+      close: number; // Close price for the Yes side
+      high: number; // Highest price for the Yes side
+      low: number; // Lowest price for the Yes side
+      open: number; // Open price for the Yes side
+      previous: number; // Previous close price for the Yes side
+    };
+    yes_bid: {
+      close: number; // Close price for the Yes side
+      high: number; // Highest price for the Yes side
+      low: number; // Lowest price for the Yes side
+      open: number; // Open price for the Yes side
+      previous: number; // Previous close price for the Yes side
+    };
+    ticker: string; // Unique identifier for the market
+  }[];
+};
+
+export type KalshiCandlestickRequest = {
+  strart_ts: number;
+  end_ts: number;
+  period_interval: number;
 };

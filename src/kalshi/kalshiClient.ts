@@ -10,15 +10,33 @@ import {
   KalshiOrderRequest,
   KalshiOrderResponse,
   KalshiCancelResponse,
+  KalshiMarketsRequest,
+  KalshiEventsRequest,
+  KalshiTradesRequest,
+  KalshiTrade,
+  KalshiSeries,
+  KalshiCandlestick,
+  KalshiCandlestickRequest,
 } from "../types/types";
 
 const CRYPTO_SIGNING_TYPE = "sha256";
 
 export interface KalshiClient {
-  getKalshiEvent(eventTicker: string): Promise<KalshiEvent>;
-  getKalshiMarket(marketTicker: string): Promise<KalshiMarket>;
-  getKalshiMarkets(marketTickers?: string[]): Promise<KalshiMarket[]>;
-  getKalshiMarketOrderBook(marketTicker: string): Promise<KalshiOrderBook>;
+  getEvents(eventsRequest?: KalshiEventsRequest): Promise<KalshiEvent[]>;
+  getEvent(
+    eventTicker: string,
+    with_nested_markets: boolean
+  ): Promise<KalshiEvent>;
+  getMarkets(marketsRequest?: KalshiMarketsRequest): Promise<KalshiMarket[]>;
+  getMarket(marketTicker: string): Promise<KalshiMarket>;
+  getTrades(tradeRequest?: KalshiTradesRequest): Promise<KalshiTrade[]>;
+  getMarketOrderBook(marketTicker: string): Promise<KalshiOrderBook>;
+  getSeries(seriesTicker: string): Promise<KalshiSeries>;
+  getMarketCandlesticks(
+    ticker: string,
+    seriesTicker: string,
+    candleStickRequest: KalshiCandlestickRequest
+  ): Promise<KalshiCandlestick[]>;
   createKalshiOrder(
     orderRequest: KalshiOrderRequest
   ): Promise<KalshiOrderResponse>;
@@ -40,7 +58,7 @@ export class KalshiClientImpl implements KalshiClient {
     filePath: string,
     kalshiAPIId: string,
     apiUrl?: string
-  ): KalshiClient {
+  ): KalshiClientImpl {
     const keyData = fs.readFileSync(filePath, "utf8");
     return new KalshiClientImpl(
       crypto.createPrivateKey({
@@ -52,39 +70,80 @@ export class KalshiClientImpl implements KalshiClient {
     );
   }
 
-  static fromKey(
+  static createFromKey(
     key: KeyObject,
     kalshiAPIId: string,
     apiUrl?: string
-  ): KalshiClient {
+  ): KalshiClientImpl {
     return new KalshiClientImpl(key, kalshiAPIId, apiUrl);
   }
 
-  public async getKalshiEvent(eventTicker: string): Promise<KalshiEvent> {
-    return this.sendGetRequest<KalshiEvent>(
-      `${this.apiUrl}/trade-api/v2/events/${eventTicker}`
+  public async getEvents(
+    eventsRequest: KalshiEventsRequest
+  ): Promise<KalshiEvent[]> {
+    return this.sendGetRequest<KalshiEvent[]>(
+      `${this.apiUrl}/trade-api/v2/events`,
+      eventsRequest
     );
   }
 
-  public async getKalshiMarket(marketTicker: string): Promise<KalshiMarket> {
+  public async getEvent(
+    eventTicker: string,
+    with_nested_markets: boolean
+  ): Promise<KalshiEvent> {
+    return this.sendGetRequest<KalshiEvent>(
+      `${this.apiUrl}/trade-api/v2/events/${eventTicker}`,
+      { with_nested_markets }
+    );
+  }
+
+  public async getMarkets(
+    marketsRequest?: KalshiMarketsRequest
+  ): Promise<KalshiMarket[]> {
+    return this.sendGetRequest<KalshiMarket[]>(
+      `${this.apiUrl}/trade-api/v2/markets`,
+      marketsRequest
+    );
+  }
+
+  public async getMarket(marketTicker: string): Promise<KalshiMarket> {
     return this.sendGetRequest<KalshiMarket>(
       `${this.apiUrl}/trade-api/v2/markets/${marketTicker}`
     );
   }
 
-  public async getKalshiMarkets(
-    marketTickers: string[]
-  ): Promise<KalshiMarket[]> {
-    return this.sendGetRequest<KalshiMarket[]>(
-      `${this.apiUrl}/trade-api/v2/markets`
+  public async getTrades(
+    tradeRequest?: KalshiTradesRequest
+  ): Promise<KalshiTrade[]> {
+    return this.sendGetRequest<KalshiTrade[]>(
+      `${this.apiUrl}/trade-api/v2/trades`,
+      tradeRequest
     );
   }
 
-  public async getKalshiMarketOrderBook(
-    marketTicker: string
+  public async getMarketOrderBook(
+    marketTicker: string,
+    depth?: number
   ): Promise<KalshiOrderBook> {
     return this.sendGetRequest<KalshiOrderBook>(
-      `${this.apiUrl}/trade-api/v2/markets/${marketTicker}/orderbook`
+      `${this.apiUrl}/trade-api/v2/markets/${marketTicker}/orderbook`,
+      { depth }
+    );
+  }
+
+  public async getSeries(seriesTicker: string): Promise<KalshiSeries> {
+    return this.sendGetRequest<KalshiSeries>(
+      `${this.apiUrl}/trade-api/v2/series/${seriesTicker}`
+    );
+  }
+
+  public async getMarketCandlesticks(
+    ticker: string,
+    seriesTicker: string,
+    candleStickRequest: KalshiCandlestickRequest
+  ): Promise<KalshiCandlestick[]> {
+    return this.sendGetRequest<KalshiCandlestick[]>(
+      `${this.apiUrl}/trade-api/v2/series/${seriesTicker}/markets/${ticker}/candlesticks`
     );
   }
 
@@ -175,10 +234,10 @@ export class KalshiClientImpl implements KalshiClient {
     }
   }
 
-  protected async sendGetRequest<T>(url: string): Promise<T> {
+  protected async sendGetRequest<T>(url: string, params?: any): Promise<T> {
     const headers = this.generateRequestHeaders(url, "GET");
     try {
-      const response = await axios.get<T>(url, { headers });
+      const response = await axios.get<T>(url, { headers, params });
       return response.data;
     } catch (error) {
       console.error(error);
