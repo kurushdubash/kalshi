@@ -20,7 +20,9 @@
     "build": "rm -rf dist/ && tsup src/index.ts --format esm,cjs --dts --clean",
     "test": "echo 'No tests yet'",
     "deploy": "yarn build && npm version patch && yarn publish --access public",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "format": "prettier --write \"src/**/*.{ts,js,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,json}\""
   },
   "repository": {
     "type": "git",
@@ -56,11 +58,16 @@
   "author": "Kurush Dubash",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^22.13.2",
     "eslint": "^9.20.1",
     "husky": "^8.0.0",
     "lint-staged": "^15.4.3",
     "prettier": "^2.8.0",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "crypto": "^1.0.1"
   }
 }

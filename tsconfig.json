@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
