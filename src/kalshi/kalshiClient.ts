@@ -79,7 +79,7 @@ export class KalshiClientImpl implements KalshiClient {
   }
 
   public async getEvents(
-    eventsRequest: KalshiEventsRequest
+    eventsRequest?: KalshiEventsRequest
   ): Promise<KalshiEvent[]> {
     return this.sendGetRequest<KalshiEvent[]>(
       `${this.apiUrl}/trade-api/v2/events`,
