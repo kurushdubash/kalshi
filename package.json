@@ -1,12 +1,12 @@
 {
   "name": "kalshi-sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A public TypeScript SDK for Kalshi (https://kalshi.com/)",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "exports": {
     ".": {
@@ -15,9 +15,9 @@
     }
   },
   "scripts": {
-    "build": "rm -rf ./dist && tsup src/index.ts --format esm,cjs",
+    "build": "rm -rf dist/ && tsup src/index.ts --format esm --dts --clean",
     "test": "echo 'No tests yet'",
-    "deploy": "yarn build && npm version patch && npm publish --access public",
+    "deploy": "yarn build && npm version patch && yarn publish --access public",
     "precommit": "lint-staged"
   },
   "repository": {
