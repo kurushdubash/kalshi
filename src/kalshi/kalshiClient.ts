@@ -1,6 +1,6 @@
 import axios from "axios";
-import fs from "fs";
 import crypto, { KeyObject } from "crypto";
+import fs from "fs";
 
 import { KALSHI_DEFAULT_URL } from "../constants/constants";
 import { KalshiMarketsClient } from "./marketClient";
@@ -104,7 +104,7 @@ export class KalshiClient {
     }
 
     try {
-      const response = await axiosFunc(`${url}`, body, { headers });
+      const response = await this.sendWithRetries(() => axiosFunc(`${url}`, body, { headers }));
       return response.data;
     } catch (error) {
       console.error(error);
@@ -115,11 +115,27 @@ export class KalshiClient {
   public async sendGetRequest<T>(url: string, params?: any): Promise<T> {
     const headers = this.generateRequestHeaders(url, "GET");
     try {
-      const response = await axios.get<T>(url, { headers, params });
+      const response = await this.sendWithRetries(() => axios.get<T>(url, { headers, params }));
       return response.data;
     } catch (error) {
       console.error(error);
       throw error;
     }
+  }
+
+  private async sendWithRetries<T>(func: () => Promise<T>, retries = 3): Promise<T> {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        return await func();
+      } catch (error: any) {
+        if (error.response?.status === 429) {
+          const delay = attempt * 250;
+          await new Promise((res) => setTimeout(res, delay));
+        } else {
+          throw error;
+        }
+      }
+    }
+    throw new Error(`Request failed after ${retries} attempts`);
   }
 }
