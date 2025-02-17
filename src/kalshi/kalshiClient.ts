@@ -4,6 +4,8 @@ import fs from "fs";
 
 import { KALSHI_DEFAULT_URL } from "../constants/constants";
 import { KalshiMarketsClient } from "./marketClient";
+import { KalshiExchangeClient } from "./exchangeClient";
+import { KalshiCollectionsClient } from "./collectionsClient";
 
 const CRYPTO_SIGNING_TYPE = "sha256";
 
@@ -11,6 +13,8 @@ export class KalshiClient {
   private privateKey: KeyObject;
   private kalshiAPIId: string;
   public markets: KalshiMarketsClient;
+  public exchange: KalshiExchangeClient;
+  public collections: KalshiCollectionsClient;
   public apiUrl: string;
 
   constructor(key: KeyObject, kalshiAPIid: string, apiUrl?: string) {
@@ -18,6 +22,8 @@ export class KalshiClient {
     this.kalshiAPIId = kalshiAPIid;
     this.apiUrl = apiUrl || KALSHI_DEFAULT_URL;
     this.markets = new KalshiMarketsClient(this);
+    this.exchange = new KalshiExchangeClient(this);
+    this.collections = new KalshiCollectionsClient(this);
   }
 
   static fromFile(

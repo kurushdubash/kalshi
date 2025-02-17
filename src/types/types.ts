@@ -207,3 +207,53 @@ export type KalshiExchangeStatus = {
   exchange_estimated_resume_time: string; // Date and time in ISO 8601 format
   trading_active: boolean; // True if trading is currently permitted on the exchange
 };
+
+export type KalshiEventMarket = {
+  event_ticker: string;
+  market_ticker: string;
+}
+
+export type KalshiMultivariateEventCollection = {
+  cursor: string; // Pointer to the next page of records in pagination
+  multivariate_contracts: Array<{
+    associated_event_tickers: string[]; // List of events associated with the collection
+    close_date: Date; // Close date of the collection
+    collection_ticker: string; // Unique identifier for the collection
+    description: string; // Short description of the collection
+    functional_description: string; // Description of how inputs affect the output
+    is_all_yes: boolean; // Indicates if only 'yes' can be used
+    is_ordered: boolean; // Indicates if the order of markets matters
+    is_single_market_per_event: boolean; // Indicates if multiple markets from the same event are accepted
+    open_date: Date; // Open date of the collection
+    series_ticker: string; // Series associated with the collection
+    size_max: number; // Maximum number of markets for Lookup/Create
+    size_min: number; // Minimum number of markets for Lookup/Create
+    title: string; // Title of the collection
+  }>;
+};
+
+export type KalshiLookupPoint = {
+    event_ticker: string; // required
+    last_queried_ts: string; // date-time, required
+    market_ticker: string; // required
+    selected_markets: Array<{
+        event_ticker: string; // required
+        market_ticker: string; // required
+        side: string; // required
+    }>; // required
+};
+
+
+export type KalshiSelectedMarket = {
+  event_ticker: string;
+  market_ticker: string
+  side: string;
+}
+
+export type KalshiMultivariateEventCollectionsRequest = {
+  status: string,
+  associated_event_ticker: string,
+  series_ticker: string,
+  limit: number,
+  cursor: string
+}

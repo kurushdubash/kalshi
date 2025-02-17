@@ -28,6 +28,8 @@ To use the client, you can invoke any of the market commands:
 const market = await kalshiClient.markets.getMarket("KXEURUSDH-25FEB1416-T1.04899");
 ```
 
+Currently supports the market, exchange, and collections APIs. (Websockets & Portfolio to come).
+
 The current supported interface for the market types are:
 ```
 getEvents(eventsRequest?: KalshiEventsRequest): Promise<KalshiEvent[]>;
@@ -40,4 +42,30 @@ getSeries(seriesTicker: string): Promise<KalshiSeries>;
 getMarketCandlesticks(ticker: string,seriesTicker: string, candleStickRequest: KalshiCandlestickRequest): Promise<KalshiCandlestick[]>;
 createKalshiOrder(orderRequest: KalshiOrderRequest): Promise<KalshiOrderResponse>;
 cancelKalshiOrder(orderId: string): Promise<KalshiCancelResponse>;
+```
+
+For exchange:
+```
+getExchangeAnnouncment(): Promise<KalshiExchangeAnnouncement[]>
+getExchangeSchedule(): Promise<KalshiExchangeSchedule>
+getExchangeStatus(): Promise<KalshiExchangeStatus>
+```
+usage of client: 
+```
+const market = await kalshiClient.exchange.getExchangeStatus();
+```
+
+
+For collections: 
+```
+getMultivariateEventCollections(params?: KalshiMultivariateEventCollectionsRequest): Promise<KalshiMultivariateEventCollection[]>
+getMultivariateEventCollection(collectionTicker: string): Promise<KalshiMultivariateEventCollection>
+createMarketInMultivariateEventCollection(collectionTicker: string, selectedMarkets: KalshiSelectedMarket[]): Promise<KalshiEventMarket>
+getMultivariateEventCollectionLookupHistory(collectionTicker: string, lookbackSeconds?: number): Promise<KalshiLookupPoint[]>
+lookupTickersForMarketInMultivariateEventCollection(collectionTicker: string, selectedMarkets: KalshiSelectedMarket[]): Promise<KalshiEventMarket>
+```
+
+usage of client: 
+```
+const market = await kalshiClient.collections.getMultivariateEventCollections();
 ```
