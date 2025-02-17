@@ -1,7 +1,6 @@
 import { KalshiClient } from "./kalshiClient";
 import {
   KalshiEventMarket,
-  KalshiExchangeSchedule,
   KalshiLookupPoint,
   KalshiMultivariateEventCollection,
   KalshiMultivariateEventCollectionsRequest,
