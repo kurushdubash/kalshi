@@ -193,7 +193,7 @@ export type KalshiExchangeAnnouncement = {
     type: "info" | "warning" | "error"; // The type of the announcement
 };
 
-export type KalshiExchangeSchedule {
+export type KalshiExchangeSchedule = {
   schedule: {
     [day: string]: {
       close_time: string;
