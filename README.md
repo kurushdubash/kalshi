@@ -12,26 +12,26 @@ To use the client, you will [need an API key](https://trading-api.readme.io/refe
 To instnatiate the client, you can either do so by providing a path to your `.pem` file or by supplying the key directly:
 
 Via a `.pem` file
-```
+```typescript
 const kalshiClient = KalshiClient.fromFile(filePath, KALSHI_API_ID_HERE);
 ```
 
 or via the key directly:
-```
+```typescript
 const kalshiClient = KalshiClient.fromKey(key, KALSHI_API_ID_HERE);
 ```
 
 # Using the Client
 
 To use the client, you can invoke any of the market commands:
-```
+```typescript
 const market = await kalshiClient.markets.getMarket("KXEURUSDH-25FEB1416-T1.04899");
 ```
 
 Currently supports the market, exchange, and collections APIs. (Websockets & Portfolio to come).
 
 The current supported interface for the market types are:
-```
+```typescript
 getEvents(eventsRequest?: KalshiEventsRequest): Promise<KalshiEvent[]>;
 getEvent(eventTicker: string, with_nested_markets: boolean): Promise<KalshiEvent>;
 getMarkets(marketsRequest?: KalshiMarketsRequest): Promise<KalshiMarket[]>;
@@ -45,19 +45,19 @@ cancelKalshiOrder(orderId: string): Promise<KalshiCancelResponse>;
 ```
 
 For exchange:
-```
+```typescript
 getExchangeAnnouncment(): Promise<KalshiExchangeAnnouncement[]>
 getExchangeSchedule(): Promise<KalshiExchangeSchedule>
 getExchangeStatus(): Promise<KalshiExchangeStatus>
 ```
 usage of client: 
-```
+```typescript
 const market = await kalshiClient.exchange.getExchangeStatus();
 ```
 
 
 For collections: 
-```
+```typescript
 getMultivariateEventCollections(params?: KalshiMultivariateEventCollectionsRequest): Promise<KalshiMultivariateEventCollection[]>
 getMultivariateEventCollection(collectionTicker: string): Promise<KalshiMultivariateEventCollection>
 createMarketInMultivariateEventCollection(collectionTicker: string, selectedMarkets: KalshiSelectedMarket[]): Promise<KalshiEventMarket>
@@ -66,6 +66,6 @@ lookupTickersForMarketInMultivariateEventCollection(collectionTicker: string, se
 ```
 
 usage of client: 
-```
+```typescript
 const market = await kalshiClient.collections.getMultivariateEventCollections();
 ```
