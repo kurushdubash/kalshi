@@ -185,3 +185,25 @@ export type KalshiCandlestickRequest = {
   end_ts: number;
   period_interval: number;
 };
+
+export type KalshiExchangeAnnouncement = {
+    delivery_time: string; // ISO 8601 date-time
+    message: string; // The message contained within the announcement
+    status: "info" | "warning" | "error"; // The current status of this announcement
+    type: "info" | "warning" | "error"; // The type of the announcement
+};
+
+export type KalshiExchangeSchedule {
+  schedule: {
+    [day: string]: {
+      close_time: string;
+      open_time: string;
+    }[];
+  };
+}
+
+export type KalshiExchangeStatus = {
+  exchange_active: boolean; // False if the core Kalshi exchange is no longer taking any state changes
+  exchange_estimated_resume_time: string; // Date and time in ISO 8601 format
+  trading_active: boolean; // True if trading is currently permitted on the exchange
+};
